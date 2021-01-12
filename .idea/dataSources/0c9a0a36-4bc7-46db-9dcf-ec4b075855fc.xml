@@ -936,12 +936,10 @@ SELECT|sys.sys_config
     <column id="273" parent="241" name="admin">
       <Position>10</Position>
       <DataType>tinyint(1)|0s</DataType>
-      <NotNull>1</NotNull>
     </column>
     <column id="274" parent="241" name="actif">
       <Position>11</Position>
       <DataType>tinyint(1)|0s</DataType>
-      <NotNull>1</NotNull>
     </column>
     <index id="275" parent="241" name="UNIQ_D79F6B1186CC499D">
       <ColNames>pseudo</ColNames>

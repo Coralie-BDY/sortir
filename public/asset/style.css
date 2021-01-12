@@ -1,0 +1,34 @@
+.navbar{
+    background: slateblue !important;
+}
+
+.btn{
+    background-color: #313131;
+    color: white;
+}
+
+.btn:hover{
+    background-color: slateblue;
+}
+
+.card-signin {
+    border: 0;
+    border-radius: 1rem;
+    box-shadow: 2rem 2rem 2rem 2rem rgba(0, 0, 0, 0.3);
+}
+
+.card-signin .card-title {
+    margin-bottom: 2rem;
+    font-weight: 300;
+    font-size: 1.5rem;
+}
+
+.card-signin .card-body {
+    padding: 2rem;
+}
+
+#fond {
+    background-image: url("../images/team.jpg");
+    background-size: cover;
+
+}
