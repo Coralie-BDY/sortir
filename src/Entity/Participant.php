@@ -116,12 +116,13 @@ class Participant implements UserInterface
     {
         return (string) $this->pseudo;
     }
-   // public function setUsername(string $pseudo): self
-    //{
-    //    $this->pseudo = $pseudo;
 
-    //    return $this;
-    // }
+    public function setUsername(string $pseudo): self
+    {
+        $this->pseudo = $pseudo;
+
+        return $this;
+     }
 
     /**
      * @see UserInterface

@@ -7,70 +7,62 @@
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}
 
-<div id="fond" class="row text-center">
-    <div class="col-sm-10 col-md-10 col-lg-10 mx-auto">
-        <div class="card card-signin my-5">
-            <div class="card-body">
-                <h5 class="card-title text-center">Votre Profil</h5>
-                <form class="form-signin"  action="" method="POST">
-    {{ form_start(registrationForm) }}
+    <div id="fond" class="row text-center">
+        <div class="col-sm-10 col-md-10 col-lg-10 mx-auto">
+            <div class="card card-signin my-5">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Votre Profil</h5>
+
+                    {{ form_start(registrationForm) }}
 
 
-    <div class="row ">
-        <div class=" col-md-10">
-            {{ form_label(registrationForm.pseudo) }}
-            {{ form_widget(registrationForm.pseudo) }}
-            {{ form_help(registrationForm.pseudo) }}
-        </div>
-        <div class="col-md-10">
-
-            {{ form_label(registrationForm.prenom) }}
-            {{ form_widget(registrationForm.prenom) }}
-            {{ form_help(registrationForm.prenom) }}
-        </div>
-        <div class="col-md-10">
-            {{ form_label(registrationForm.nom) }}
-            {{ form_widget(registrationForm.nom) }}
-            {{ form_help(registrationForm.nom) }}
-        </div>
-        <div class="col-md-10">
-            {{ form_label(registrationForm.telephone) }}
-            {{ form_widget(registrationForm.telephone) }}
-            {{ form_help(registrationForm.telephone) }}
-        </div>
-        <div class="col-md-10">
-            {{ form_label(registrationForm.email) }}
-            {{ form_widget(registrationForm.email) }}
-            {{ form_help(registrationForm.email) }}
-
-
-        </div>
-        <div class="col-md-10">
-{#            {{ form_label(registrationForm.plainPassword) }}#}
-            {{ form_widget(registrationForm.plainPassword) }}
-            {{ form_help(registrationForm.plainPassword) }}
-        </div>
-        <div class="col-md-10">
-            {{ form_label(registrationForm.ratachementCampus) }}
-            {{ form_widget(registrationForm.ratachementCampus) }}
-            {{ form_help(registrationForm.ratachementCampus) }}
-        </div>
-        <div class="col-md-10">
-            {{ form_label(registrationForm.agreeTerms) }}
-            {{ form_widget(registrationForm.agreeTerms) }}
-            {{ form_help(registrationForm.agreeTerms) }}
-
-
-        </div>
-    </div>
-
-
-    <button class="button btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
-    <button class="button btn btn-primary">{{ button_label|default('Annuler') }}</button>
-    {{ form_end(registrationForm) }}
-                </form>
+                    <div class="row mx-auto text-center" style="width: 100%;">
+                        <div class=" offset-md-2 col-md-8 offset-md-2">
+                            {{ form_label(registrationForm.pseudo) }}
+                            {{ form_widget(registrationForm.pseudo) }}
+                            {{ form_help(registrationForm.pseudo) }}
+                        </div>
+                        <div class=" offset-md-2 col-md-8 offset-md-2 mt-3">
+                            {{ form_label(registrationForm.prenom) }}
+                            {{ form_widget(registrationForm.prenom) }}
+                            {{ form_help(registrationForm.prenom) }}
+                        </div>
+                        <div class=" offset-md-2 col-md-8 offset-md-2 mt-3">
+                            {{ form_label(registrationForm.nom) }}
+                            {{ form_widget(registrationForm.nom) }}
+                            {{ form_help(registrationForm.nom) }}
+                        </div>
+                        <div class=" offset-md-2 col-md-8 offset-md-2 mt-3">
+                            {{ form_label(registrationForm.telephone) }}
+                            {{ form_widget(registrationForm.telephone) }}
+                            {{ form_help(registrationForm.telephone) }}
+                        </div>
+                        <div class=" offset-md-2 col-md-8 offset-md-2 mt-3">
+                            {{ form_label(registrationForm.email) }}
+                            {{ form_widget(registrationForm.email) }}
+                            {{ form_help(registrationForm.email) }}
+                        </div>
+                        <div class=" offset-md-2 col-md-8 offset-md-2 mt-3">
+                            {# {{ form_label(registrationForm.plainPassword) }} #}
+                            {{ form_widget(registrationForm.plainPassword) }}
+                            {{ form_help(registrationForm.plainPassword) }}
+                        </div>
+                        <div class=" offset-md-2 col-md-8 offset-md-2 mt-3">
+                            {{ form_label(registrationForm.ratachementCampus) }}
+                            {{ form_widget(registrationForm.ratachementCampus) }}
+                            {{ form_help(registrationForm.ratachementCampus) }}
+                        </div>
+                        <div class=" offset-md-2 col-md-8 offset-md-2 mt-5">
+                            {{ form_label(registrationForm.agreeTerms) }}
+                            {{ form_widget(registrationForm.agreeTerms) }}
+                            {{ form_help(registrationForm.agreeTerms) }}
+                        </div>
+                    </div>
+                    <button class="button btn btn-primary mt-5 mr-5">{{ button_label|default('Enregistrer') }}</button>
+                    <button class="button btn btn-primary mt-5">{{ button_label|default('Annuler') }}</button>
+                    {{ form_end(registrationForm) }}
+                </div>
             </div>
         </div>
     </div>
-</div>
 {% endblock %}
