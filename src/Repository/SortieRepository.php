@@ -19,6 +19,14 @@ class SortieRepository extends ServiceEntityRepository
         parent::__construct($registry, Sortie::class);
     }
 
+    /**
+     * @return \App\Entity\Sortie[]
+     *
+     */
+    public function findSearch(): array
+    {
+        return $this->findAll();
+    }
     // /**
     //  * @return Sortie[] Returns an array of Sortie objects
     //  */
@@ -47,4 +55,5 @@ class SortieRepository extends ServiceEntityRepository
         ;
     }
     */
+
 }

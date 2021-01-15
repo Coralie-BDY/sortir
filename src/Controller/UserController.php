@@ -24,7 +24,7 @@ class UserController extends AbstractController
         $this->entityManager = $entityManager;
     }
     /**
-     * @Route("/profile/{id}", name="user_profil", methods={"GET"})
+     * @Route("/profile{id}", name="user_profil", methods={"GET"})
      * @param \App\Entity\User $user
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -39,7 +39,7 @@ class UserController extends AbstractController
         ]);
     }
     /**
-     * @Route("/user/edit/{id}", name="user_edit", methods={"GET","POST"})
+     * @Route("/user/edit{id}", name="user_edit", methods={"GET","POST"})
      */
     public function edit(Request $request,
                          User $user,

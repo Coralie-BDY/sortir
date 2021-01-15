@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sortir.com ! {% endblock %}
+
+{% block body %}
+
+    <div class="example-wrapper">
+    <h1 class=" mb-5">Hello {{ user.username }}! ✅</h1>
+    <h3 class=" mb-5">Date du jour : {{ "now"|date('d-m-y') }}! ✅</h3>
+
+    {% if app.user %}
+
+        <div class="mb-5 mt-5">
+            Vous êtes connecté connecté {{ app.user.username }},
+            <a href="{{ path('app_logout') }}">Se déconnecter</a>
+        </div>
+
+    {% endif%}
+
+
+    <h1>Gestion des Sorties</h1>
+        {% for message in app.flashes ('success') %}
+            <div class="alert alert-success">{{ message }}</div>
+        {% endfor %}
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Nom de la sortie</th>
+                <th>Date de la sortie</th>
+                <th>Clôture des inscriptions</th>
+                <th>places</th>
+                <th>Etat</th>
+                <th>Inscrit</th>
+                <th>Organisateur</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for sortie in sorties %}
+                <tr>
+                    <td>{{ sortie.nom }} </td>
+                    <td>{{ sortie.date ? sortie.date|date('d-m-Y H:i') : '' }} </td>
+                    <td>{{ sortie.clotureinscription ? sortie.clotureinscription|date('d-m-Y H:i') : '' }} </td>
+                    <td>{{ sortie.maxinscrits }} </td>
+                    <td>{{ sortie.etatsSortie.libelle }} </td>
+                    <td>en attente</td>
+                    <td>{{ sortie.organisateur.username }}</td>
+                    <td>
+                        <a href="#"
+                           class="btn btn-secondary">Editer</a>
+                        <form method="post" action="#"
+                              style="display: inline-block" onsubmit="return confirm('Êtes-vous vraiment sûr?')">
+{#                            <input type="hidden" name="_method" value="DELETE">#}
+{#                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ article.id) }}">#}
+                            <button class="btn btn-danger">Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="text-right">
+            <a href="#" class="btn btn-primary">
+                Créer un nouvel article </a>
+        </div>
+
+
+{% endblock %}

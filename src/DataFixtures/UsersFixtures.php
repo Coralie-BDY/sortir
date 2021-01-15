@@ -20,7 +20,7 @@ class UsersFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $faker = Faker\Factory::create('fr_FR');
-        for($users =1; $users < 5; $users ++)
+        for($users =1; $users <= 5; $users ++)
         {
             $ca = $this->getReference(('campus_' . $faker->numberBetween(1, 4)));
             $user = new User();
@@ -44,12 +44,12 @@ class UsersFixtures extends Fixture
             $user->setNom($faker->name)
                 ->setPrenom($faker->firstName)
                 ->setCampus($ca);
-
-
             $user->setPassword(
                 $this->passwordEncoder->encodePassword(
                     $user, 'hellokitty'));
             $manager->persist($user);
+
+            $this->addReference('user_'. $users,$user );
         }
 
         $manager->flush();
