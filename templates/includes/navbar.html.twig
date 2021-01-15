@@ -25,7 +25,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Mon Profil</a>
+                    <a class="nav-link" href="{{ path('user_profil',  {id: app.user.id}) }}">Mon Profil</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('app_logout') }}">Déconnexion</a>

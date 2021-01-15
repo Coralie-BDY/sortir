@@ -70,13 +70,9 @@ class LoginAuthenticator extends AbstractFormLoginAuthenticator implements Passw
 //        $user = $this->entityManager->getRepository(User::class)
 //            ->findOneBy(['pseudo' => $credentials['pseudo']]);
 
+
         $user = $this->entityManager->getRepository(User::class)
-            ->createQueryBuilder('u')
-            ->andWhere('u.pseudo = :pseudo OR u.email = :email')
-            ->setParameter('pseudo', $credentials['pseudo'])
-            ->setParameter('email', $credentials['pseudo'])
-            ->getQuery()
-            ->getOneOrNullResult();
+            ->loadUserByUsername($credentials['pseudo']);
 
         if (!$user) {
             // fail authentication with a custom error
