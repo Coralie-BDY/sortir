@@ -1,5 +1,9 @@
 @import "~bootstrap";
 
+
+body{
+    font-family: sans-serif !important;
+}
 .navbar{
     background: slateblue !important;
 }
@@ -31,7 +35,11 @@
 
 #fond {
     background-image: url("../images/team.jpg");
-    background-size: cover;
+  }
 
+.bottom-footer {
+    background: slateblue;
+    padding: 25px 0;
+    text-align: center;
+    color: #fff;
 }
-

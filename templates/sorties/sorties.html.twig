@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sortir.com ! {% endblock %}
+
+{% block body %}
+
+    <div class="example-wrapper">
+
+    <h3 class=" mt-5  mr-5 text-right mb-5">Date du jour : {{ "now"|date('d-m-y') }}! ✅</h3>
+
+        <h3 class="mb-5 mr-5 mt-5 text-right">
+           Bienvenue {{ user.username }}
+        </h3>
+
+
+    <div class="text-left">
+        {% include'search/search.html.twig' with {form: form} only %}
+    </div>
+
+
+
+    <h1 class="text-center mb-5">Gestion des Sorties</h1>
+
+    {% for message in app.flashes ('success') %}
+        <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+
+    <table class="table table-striped mt-5">
+        <thead>
+        <tr>
+            <th>Nom de la sortie</th>
+            <th>Date de la sortie</th>
+            <th>Clôture des inscriptions</th>
+            <th>places</th>
+            <th>Campus</th>
+            <th>Etat</th>
+            <th>Inscrit</th>
+            <th>Organisateur</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for sortie in sorties %}
+            <tr>
+                <td>{{ sortie.nom }} </td>
+                <td>{{ sortie.date ? sortie.date|date('d-m-Y H:i') : '' }} </td>
+                <td>{{ sortie.clotureinscription ? sortie.clotureinscription|date('d-m-Y H:i') : '' }} </td>
+                <td>{{ sortie.maxinscrits }} </td>
+                <td>{{ sortie.campus }}</td>
+                <td>{{ sortie.etatsSortie.libelle }} </td>
+                <td><input type="checkbox"> </td>
+                <td>{{ sortie.organisateur.username }}</td>
+                <td>
+                    <a href="#" class="btn btn-secondary">Afficher</a>
+                    <a href="#" class="btn btn-secondary">Modifier</a>
+                    <a href="#" class="btn btn-secondary">S'inscrire</a>
+                    <a href="#" class="btn btn-secondary">Se désister</a>
+                    <a href="#" class="btn btn-secondary">Publier</a>
+                    <a href="#" class="btn btn-secondary">Annuler</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="text-left">
+        <a href="#" class="btn btn-primary">
+            Créer une sortie</a>
+    </div>
+
+
+{% endblock %}

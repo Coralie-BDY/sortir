@@ -22,22 +22,22 @@ class Campus
     /**
      * @ORM\Column(type="string", length=50)
      */
-    private $nom_campus;
+    private $campus;
 
     /**
      * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="campus")
      */
-    private $site_organisateur;
+    private $siteOrga;
 
     /**
-     * @ORM\OneToMany(targetEntity=Participant::class, mappedBy="ratachement_campus", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=User::class, mappedBy="campus")
      */
-    private $participants;
+    private $users;
 
     public function __construct()
     {
-        $this->site_organisateur = new ArrayCollection();
-        $this->participants = new ArrayCollection();
+        $this->siteOrga = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -45,14 +45,14 @@ class Campus
         return $this->id;
     }
 
-    public function getNomCampus(): ?string
+    public function getCampus(): ?string
     {
-        return $this->nom_campus;
+        return $this->campus;
     }
 
-    public function setNomCampus(string $nom_campus): self
+    public function setCampus(string $campus): self
     {
-        $this->nom_campus = $nom_campus;
+        $this->campus = $campus;
 
         return $this;
     }
@@ -60,27 +60,27 @@ class Campus
     /**
      * @return Collection|Sortie[]
      */
-    public function getSiteOrganisateur(): Collection
+    public function getSiteOrga(): Collection
     {
-        return $this->site_organisateur;
+        return $this->siteOrga;
     }
 
-    public function addSiteOrganisateur(Sortie $siteOrganisateur): self
+    public function addSiteOrga(Sortie $siteOrga): self
     {
-        if (!$this->site_organisateur->contains($siteOrganisateur)) {
-            $this->site_organisateur[] = $siteOrganisateur;
-            $siteOrganisateur->setCampus($this);
+        if (!$this->siteOrga->contains($siteOrga)) {
+            $this->siteOrga[] = $siteOrga;
+            $siteOrga->setCampus($this);
         }
 
         return $this;
     }
 
-    public function removeSiteOrganisateur(Sortie $siteOrganisateur): self
+    public function removeSiteOrga(Sortie $siteOrga): self
     {
-        if ($this->site_organisateur->removeElement($siteOrganisateur)) {
+        if ($this->siteOrga->removeElement($siteOrga)) {
             // set the owning side to null (unless already changed)
-            if ($siteOrganisateur->getCampus() === $this) {
-                $siteOrganisateur->setCampus(null);
+            if ($siteOrga->getCampus() === $this) {
+                $siteOrga->setCampus(null);
             }
         }
 
@@ -88,32 +88,40 @@ class Campus
     }
 
     /**
-     * @return Collection|Participant[]
+     * @return Collection|User[]
      */
-    public function getParticipants(): Collection
+    public function getUsers(): Collection
     {
-        return $this->participants;
+        return $this->users;
     }
 
-    public function addParticipant(Participant $participant): self
+    public function addUser(User $user): self
     {
-        if (!$this->participants->contains($participant)) {
-            $this->participants[] = $participant;
-            $participant->setRatachementCampus($this);
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->setCampus($this);
         }
 
         return $this;
     }
 
-    public function removeParticipant(Participant $participant): self
+    public function removeUser(User $user): self
     {
-        if ($this->participants->removeElement($participant)) {
+        if ($this->users->removeElement($user)) {
             // set the owning side to null (unless already changed)
-            if ($participant->getRatachementCampus() === $this) {
-                $participant->setRatachementCampus(null);
+            if ($user->getCampus() === $this) {
+                $user->setCampus(null);
             }
         }
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function __toString()
+    {
+        return $this->campus;
     }
 }

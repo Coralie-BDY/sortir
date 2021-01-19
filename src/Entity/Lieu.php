@@ -2,15 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\LieuxRepository;
+use App\Repository\LieuRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=LieuxRepository::class)
+ * @ORM\Entity(repositoryClass=LieuRepository::class)
  */
-class Lieux
+class Lieu
 {
     /**
      * @ORM\Id
@@ -22,10 +22,10 @@ class Lieux
     /**
      * @ORM\Column(type="string", length=50)
      */
-    private $nom_lieu;
+    private $nom;
 
     /**
-     * @ORM\Column(type="string", length=50, nullable=true)
+     * @ORM\Column(type="string", length=50)
      */
     private $adresse;
 
@@ -40,18 +40,19 @@ class Lieux
     private $longitude;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Ville::class, inversedBy="ville_sortie")
+     * @ORM\ManyToOne(targetEntity=Ville::class, inversedBy="Lieux")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $ville;
 
     /**
-     * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="lieux")
+     * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="lieu")
      */
-    private $Lieu_sortie;
+    private $sorties;
 
     public function __construct()
     {
-        $this->Lieu_sortie = new ArrayCollection();
+        $this->sorties = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -59,14 +60,14 @@ class Lieux
         return $this->id;
     }
 
-    public function getNomLieu(): ?string
+    public function getNom(): ?string
     {
-        return $this->nom_lieu;
+        return $this->nom;
     }
 
-    public function setNomLieu(string $nom_lieu): self
+    public function setNom(string $nom): self
     {
-        $this->nom_lieu = $nom_lieu;
+        $this->nom = $nom;
 
         return $this;
     }
@@ -76,7 +77,7 @@ class Lieux
         return $this->adresse;
     }
 
-    public function setAdresse(?string $adresse): self
+    public function setAdresse(string $adresse): self
     {
         $this->adresse = $adresse;
 
@@ -122,27 +123,27 @@ class Lieux
     /**
      * @return Collection|Sortie[]
      */
-    public function getLieuSortie(): Collection
+    public function getSorties(): Collection
     {
-        return $this->Lieu_sortie;
+        return $this->sorties;
     }
 
-    public function addLieuSortie(Sortie $lieuSortie): self
+    public function addSorty(Sortie $sorty): self
     {
-        if (!$this->Lieu_sortie->contains($lieuSortie)) {
-            $this->Lieu_sortie[] = $lieuSortie;
-            $lieuSortie->setLieux($this);
+        if (!$this->sorties->contains($sorty)) {
+            $this->sorties[] = $sorty;
+            $sorty->setLieu($this);
         }
 
         return $this;
     }
 
-    public function removeLieuSortie(Sortie $lieuSortie): self
+    public function removeSorty(Sortie $sorty): self
     {
-        if ($this->Lieu_sortie->removeElement($lieuSortie)) {
+        if ($this->sorties->removeElement($sorty)) {
             // set the owning side to null (unless already changed)
-            if ($lieuSortie->getLieux() === $this) {
-                $lieuSortie->setLieux(null);
+            if ($sorty->getLieu() === $this) {
+                $sorty->setLieu(null);
             }
         }
 

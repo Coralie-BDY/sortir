@@ -22,12 +22,12 @@ class Sortie
     /**
      * @ORM\Column(type="string", length=50)
      */
-    private $nom_sortie;
+    private $nom;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $date_debut;
+    private $date;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -37,12 +37,12 @@ class Sortie
     /**
      * @ORM\Column(type="datetime")
      */
-    private $date_cloture_inscription;
+    private $clotureinscription;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $nb_max_inscrits;
+    private $maxinscrits;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -50,36 +50,42 @@ class Sortie
     private $description;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Etat::class, inversedBy="etat_sortie")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $etat;
+    private $photo;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Campus::class, inversedBy="site_organisateur")
+     * @ORM\ManyToOne(targetEntity=Etat::class, inversedBy="etatSortie")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $etatsSortie;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Campus::class, inversedBy="siteOrga")
      * @ORM\JoinColumn(nullable=false)
      */
     private $campus;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Lieux::class, inversedBy="Lieu_sortie")
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="inscriptions")
      */
-    private $lieux;
+    private $users;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Participant::class, inversedBy="organisateur")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="organisateur")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $participant;
+    private $organisateur;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Participant::class, mappedBy="inscription")
+     * @ORM\ManyToOne(targetEntity=Lieu::class, inversedBy="sorties")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $participants;
+    private $lieu;
 
     public function __construct()
     {
-        $this->participants = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -87,26 +93,26 @@ class Sortie
         return $this->id;
     }
 
-    public function getNomSortie(): ?string
+    public function getNom(): ?string
     {
-        return $this->nom_sortie;
+        return $this->nom;
     }
 
-    public function setNomSortie(string $nom_sortie): self
+    public function setNom(string $nom): self
     {
-        $this->nom_sortie = $nom_sortie;
+        $this->nom = $nom;
 
         return $this;
     }
 
-    public function getDateDebut(): ?\DateTimeInterface
+    public function getDate(): ?\DateTimeInterface
     {
-        return $this->date_debut;
+        return $this->date;
     }
 
-    public function setDateDebut(\DateTimeInterface $date_debut): self
+    public function setDate(\DateTimeInterface $date): self
     {
-        $this->date_debut = $date_debut;
+        $this->date = $date;
 
         return $this;
     }
@@ -123,26 +129,26 @@ class Sortie
         return $this;
     }
 
-    public function getDateClotureInscription(): ?\DateTimeInterface
+    public function getClotureinscription(): ?\DateTimeInterface
     {
-        return $this->date_cloture_inscription;
+        return $this->clotureinscription;
     }
 
-    public function setDateClotureInscription(\DateTimeInterface $date_cloture_inscription): self
+    public function setClotureinscription(\DateTimeInterface $clotureinscription): self
     {
-        $this->date_cloture_inscription = $date_cloture_inscription;
+        $this->clotureinscription = $clotureinscription;
 
         return $this;
     }
 
-    public function getNbMaxInscrits(): ?int
+    public function getMaxinscrits(): ?int
     {
-        return $this->nb_max_inscrits;
+        return $this->maxinscrits;
     }
 
-    public function setNbMaxInscrits(int $nb_max_inscrits): self
+    public function setMaxinscrits(int $maxinscrits): self
     {
-        $this->nb_max_inscrits = $nb_max_inscrits;
+        $this->maxinscrits = $maxinscrits;
 
         return $this;
     }
@@ -159,14 +165,26 @@ class Sortie
         return $this;
     }
 
-    public function getEtat(): ?Etat
+    public function getPhoto(): ?string
     {
-        return $this->etat;
+        return $this->photo;
     }
 
-    public function setEtat(?Etat $etat): self
+    public function setPhoto(?string $photo): self
     {
-        $this->etat = $etat;
+        $this->photo = $photo;
+
+        return $this;
+    }
+
+    public function getEtatsSortie(): ?Etat
+    {
+        return $this->etatsSortie;
+    }
+
+    public function setEtatsSortie(?Etat $etatsSortie): self
+    {
+        $this->etatsSortie = $etatsSortie;
 
         return $this;
     }
@@ -183,54 +201,61 @@ class Sortie
         return $this;
     }
 
-    public function getLieux(): ?Lieux
-    {
-        return $this->lieux;
-    }
-
-    public function setLieux(?Lieux $lieux): self
-    {
-        $this->lieux = $lieux;
-
-        return $this;
-    }
-
-    public function getParticipant(): ?Participant
-    {
-        return $this->participant;
-    }
-
-    public function setParticipant(?Participant $participant): self
-    {
-        $this->participant = $participant;
-
-        return $this;
-    }
-
     /**
-     * @return Collection|Participant[]
+     * @return Collection|User[]
      */
-    public function getParticipants(): Collection
+    public function getUsers(): Collection
     {
-        return $this->participants;
+        return $this->users;
     }
 
-    public function addParticipant(Participant $participant): self
+    public function addUser(User $user): self
     {
-        if (!$this->participants->contains($participant)) {
-            $this->participants[] = $participant;
-            $participant->addInscription($this);
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->addInscription($this);
         }
 
         return $this;
     }
 
-    public function removeParticipant(Participant $participant): self
+    public function removeUser(User $user): self
     {
-        if ($this->participants->removeElement($participant)) {
-            $participant->removeInscription($this);
+        if ($this->users->removeElement($user)) {
+            $user->removeInscription($this);
         }
 
         return $this;
     }
+
+    public function getOrganisateur(): ?User
+    {
+        return $this->organisateur;
+    }
+
+    public function setOrganisateur(?User $organisateur): self
+    {
+        $this->organisateur = $organisateur;
+
+        return $this;
+    }
+
+    public function getLieu(): ?Lieu
+    {
+        return $this->lieu;
+    }
+
+
+    public function setLieu(?Lieu $lieu): self
+    {
+        $this->lieu = $lieu;
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->nom;
+    }
+
 }

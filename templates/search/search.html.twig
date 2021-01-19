@@ -1,0 +1,17 @@
+{{ form_start(form) }}
+<div class="row ml-5 mb-4">
+    <div class="col-md-4">
+        {{ form_row(form.campus) }}
+        {{ form_row(form.nomSortie) }}
+        {{ form_row(form.dateDebut) }}
+        {{ form_row(form.dateFin) }}
+    </div>
+    <div class="col-md-5 mt-5 text-left offset-md-1">
+        {{ form_row(form.organisateur) }}
+        {{ form_row(form.inscription) }}
+        {{ form_row(form.sortiePassee) }}
+        {{ form_row(form.submit) }}
+    </div>
+</div>
+
+{{ form_end(form) }}

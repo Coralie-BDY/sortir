@@ -2,18 +2,16 @@
 
 namespace App\Entity;
 
-use App\Repository\ParticipantRepository;
+use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @ORM\Entity(repositoryClass=ParticipantRepository::class)
- * @UniqueEntity(fields={"pseudo"}, message="There is already an account with this pseudo")
+ * @ORM\Entity(repositoryClass=UserRepository::class)
  */
-class Participant implements UserInterface
+class User implements UserInterface
 {
     /**
      * @ORM\Id
@@ -39,12 +37,12 @@ class Participant implements UserInterface
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="string", length=30)
      */
     private $nom;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="string", length=30)
      */
     private $prenom;
 
@@ -54,7 +52,7 @@ class Participant implements UserInterface
     private $telephone;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="string", length=30)
      */
     private $email;
 
@@ -69,25 +67,24 @@ class Participant implements UserInterface
     private $actif;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Campus::class, inversedBy="participants")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToMany(targetEntity=Sortie::class, mappedBy="users")
      */
-    private $ratachement_campus;
+    private $inscriptions;
 
     /**
-     * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="participant")
+     * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="organisateur")
      */
     private $organisateur;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Sortie::class, inversedBy="participants")
+     * @ORM\ManyToOne(targetEntity=Campus::class, inversedBy="users")
      */
-    private $inscription;
+    private $campus;
 
     public function __construct()
     {
+        $this->inscriptions = new ArrayCollection();
         $this->organisateur = new ArrayCollection();
-        $this->inscription = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -116,13 +113,6 @@ class Participant implements UserInterface
     {
         return (string) $this->pseudo;
     }
-
-    public function setUsername(string $pseudo): self
-    {
-        $this->pseudo = $pseudo;
-
-        return $this;
-     }
 
     /**
      * @see UserInterface
@@ -247,14 +237,26 @@ class Participant implements UserInterface
         return $this;
     }
 
-    public function getRatachementCampus(): ?Campus
+    /**
+     * @return Collection|Sortie[]
+     */
+    public function getInscriptions(): Collection
     {
-        return $this->ratachement_campus;
+        return $this->inscriptions;
     }
 
-    public function setRatachementCampus(?Campus $ratachement_campus): self
+    public function addInscription(Sortie $inscription): self
     {
-        $this->ratachement_campus = $ratachement_campus;
+        if (!$this->inscriptions->contains($inscription)) {
+            $this->inscriptions[] = $inscription;
+        }
+
+        return $this;
+    }
+
+    public function removeInscription(Sortie $inscription): self
+    {
+        $this->inscriptions->removeElement($inscription);
 
         return $this;
     }
@@ -271,7 +273,7 @@ class Participant implements UserInterface
     {
         if (!$this->organisateur->contains($organisateur)) {
             $this->organisateur[] = $organisateur;
-            $organisateur->setParticipant($this);
+            $organisateur->setOrganisateur($this);
         }
 
         return $this;
@@ -281,35 +283,31 @@ class Participant implements UserInterface
     {
         if ($this->organisateur->removeElement($organisateur)) {
             // set the owning side to null (unless already changed)
-            if ($organisateur->getParticipant() === $this) {
-                $organisateur->setParticipant(null);
+            if ($organisateur->getOrganisateur() === $this) {
+                $organisateur->setOrganisateur(null);
             }
         }
 
         return $this;
     }
 
+    public function getCampus(): ?Campus
+    {
+        return $this->campus;
+    }
+
+    public function setCampus(?Campus $campus): self
+    {
+        $this->campus = $campus;
+
+        return $this;
+    }
+
     /**
-     * @return Collection|Sortie[]
+     * @return mixed
      */
-    public function getInscription(): Collection
+    public function __toString()
     {
-        return $this->inscription;
-    }
-
-    public function addInscription(Sortie $inscription): self
-    {
-        if (!$this->inscription->contains($inscription)) {
-            $this->inscription[] = $inscription;
-        }
-
-        return $this;
-    }
-
-    public function removeInscription(Sortie $inscription): self
-    {
-        $this->inscription->removeElement($inscription);
-
-        return $this;
+        return $this->nom;
     }
 }

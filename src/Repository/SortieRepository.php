@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Sortie;
+use App\Entity\User;
+use App\Entity\SearchSortie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -18,6 +20,68 @@ class SortieRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Sortie::class);
     }
+
+
+    public function findSearch(SearchSortie $data, User $user)
+    {
+        $req = $this->createQueryBuilder('s')
+            //recherche par nom
+            ->select('s')
+            ->andWhere('s.nom LIKE :nom')
+            ->setParameter('nom',"%" . $data->getNomSortie() . "%");
+
+        //recherche par campus
+        if($data->getCampus())
+        {
+            $req->andWhere('IDENTITY(s.campus) LIKE :campus')
+                ->setParameter('campus', $data->getCampus());
+        }
+
+             //recherche par organisateur
+        if($data->getOrganisateur())
+        {
+            $req->andWhere('IDENTITY(s.organisateur) LIKE :organisateur')
+                ->setParameter('organisateur', $user);
+        }
+
+        //recherche par inscription
+        if($data->getInscription())
+        {
+            $req->innerJoin('s.users', 'u', 'WITH', 'u.id = :userId')
+                ->setParameter('userId', $user->getId());
+        }
+
+       if($data->getInscription())
+       {
+           $req->andWhere(':user NOT MEMBER OF s.users')
+               ->setParameter('user', $user->getId());
+       }
+        //recherche par sortie passée
+        if($data->getSortiePassee())
+        {
+            $req->andWhere('s.etatsSortie = :etat')
+                ->setParameter('etat',
+                    $this->getEntityManager()->getRepository(Sortie::class)->find(5));
+        }
+
+        //recherche par date
+        if($data->getDateDebut())
+        {
+            $req->andWhere('s.date >= :dateDebut')
+                ->setParameter('dateDebut', $data->getDateDebut());
+        }
+
+        if($data->getDateFin())
+        {
+            $req->andWhere('s.clotureinscription <= :dateFin')
+                ->setParameter('dateFin', $data->getDateFin());
+        }
+
+
+        return $req->getQuery()->getResult();
+
+    }
+
 
     // /**
     //  * @return Sortie[] Returns an array of Sortie objects
@@ -47,4 +111,5 @@ class SortieRepository extends ServiceEntityRepository
         ;
     }
     */
+
 }
