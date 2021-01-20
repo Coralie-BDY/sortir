@@ -1,0 +1,18 @@
+
+{% if sortie.etatsSortie.id == 5  %}
+                <td>{{ sortie.nom }} </td>
+                <td>{{ sortie.date ? sortie.date|date('d-m-Y H:i') : '' }} </td>
+                <td>{{ sortie.clotureinscription ? sortie.clotureinscription|date('d-m-Y H:i') : '' }} </td>
+                <td>{{ sortie.maxinscrits }} </td>
+                <td>{{ sortie.campus }}</td>
+                <td>{{ sortie.etatsSortie.libelle }} </td>
+                <td><input type="checkbox"> </td>
+                <td>{{ sortie.organisateur.username }}</td>
+                <td>
+                    {% if sortie.organisateur.username == user.username  %}
+                        <a href="#" class="btn btn-secondary">Modifier</a>
+                    {% else %}
+                        <a href="#" class="btn btn-secondary">Afficher</a>
+                    {% endif %}
+                </td>
+{% endif %}

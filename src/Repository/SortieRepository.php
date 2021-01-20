@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Campus;
 use App\Entity\Sortie;
 use App\Entity\User;
 use App\Entity\SearchSortie;
@@ -21,6 +22,28 @@ class SortieRepository extends ServiceEntityRepository
         parent::__construct($registry, Sortie::class);
     }
 
+//    public function findByPast()
+//    {
+//        $req = $this->createQueryBuilder('s')
+//            ->andWhere('s.etatsSortie = :etat')
+//            ->setParameter('etat',
+//                $this->getEntityManager()->getRepository(Sortie::class)->find(5));
+//        return $req->getQuery()->getResult();
+//
+//    }
+
+    public function findByCampus(SearchSortie $data, User $user){
+
+        $req = $this->createQueryBuilder('s')
+            ->select('s')
+            ->andWhere('IDENTITY(s.campus) LIKE :campus')
+            ->setParameter('campus', $data->getCampus())
+            ->andWhere('IDENTITY(s.organisateur) LIKE :organisateur')
+            ->setParameter('organisateur', $user);
+        return $req->getQuery()->getResult();
+
+
+    }
 
     public function findSearch(SearchSortie $data, User $user)
     {

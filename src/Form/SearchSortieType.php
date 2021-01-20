@@ -18,6 +18,9 @@ class SearchSortieType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $inscription = ['Auquelles je suis inscrit/e' => true,
+            'Auquelles je ne suis pas inscrit/e' => true];
+
         $builder
             ->add('campus', EntityType::class, [
                 'class'=>Campus::class,
@@ -28,24 +31,23 @@ class SearchSortieType extends AbstractType
                 'label' => 'Sorties',
                 'required' => false,
                 'expanded' => true,
-                'multiple' => false,
-                'placeholder' => false,
-                'choices' => [
-                    'Toutes' => null,
-                    'Auquelles je suis inscrit/e' => true,
-                    'Auquelles je ne suis pas inscrit/e' => false,
-                ],
-                'attr' => [
-                    'class' => 'form-check'
-                ]
+                'multiple' => true,
+                'data' => array($inscription),
+                'choices' => $inscription,
+                'choice_attr' => array('checked'=>true)
             ])
             ->add('organisateur', CheckboxType::class, [
                 'label' => 'Sortie dont je suis organisateur/trice',
-                'required' => false
+                'required' => false,
+                'data'=>true
             ])
             ->add('sortiePassee', CheckboxType::class, [
                 'label' => 'Sorties passées',
-                'required' => false
+                'required' =>false,
+                'attr' =>[
+                   'id'=>'checked',
+                    'onclick'=>'check()'
+                    ]
             ])
             ->add('nomSortie', TextType::class, [
                 'required' => false,
@@ -76,8 +78,8 @@ class SearchSortieType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => SearchSortie::class,
-//            'method' => 'get',
-//            'csrf_protection' => false,
+            'method' => 'get',
+            'csrf_protection' => false,
 //            'translation_domain' => 'forms'
         ]);
     }

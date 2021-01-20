@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 
+
+use App\Entity\SearchSortie;
 use App\Form\SearchSortieType;
 use App\Repository\SortieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,11 +21,14 @@ class SortieController extends AbstractController
      */
     public function index(SortieRepository $repository, Request $request): Response
     {
-        $sorties = $repository->findAll();
+        $data = new SearchSortie();
         $user = $this->getUser();
+        $data->setCampus($user->getCampus());
+        $sorties = $repository->findByCampus($data, $user);
 
-        $form = $this->createForm(SearchSortieType::class);
+        $form = $this->createForm(SearchSortieType::class, $data);
         $form->handleRequest($request);
+
         if($form->isSubmitted() && $form->isValid()){
             $data = $form->getData();
 
@@ -37,33 +42,6 @@ class SortieController extends AbstractController
         ]);
     }
 
-//    public function search(Request $request)
-//    {
-//        $form = $this->createForm(SearchSortieType::class);
-//        $form->handleRequest($request);
-//
-//        return $this->render('sorties/sorties.html.twig', [
-//            'form'=> $form->createView()
-//        ]);
-//    }
 
-//    public function search(Request $request)
-//    {
-//        $user = $this->getUser();
-////        $data = new SearchSortie();
-////        $form = $this->createForm(SearchSortieType::class, $data);
-////        $form->handleRequest($request);
-////        if($form->isSubmitted() && $form->isValid()) {
-////            $manager = $this->getDoctrine()->getManager();
-////            $sorties = $manager->getRepository(Sortie::class)->findSearch($this->getUser(), $data);
-////        } else {
-////            $sorties = $manager->getRepository(Sortie::class)->findAll();
-////       }
-//
-//        return $this->render('sorties/sorties.html.twig', [
-////            'sorties' => $sorties,
-////            'form'=>$form->createView(),
-//            'user'=>$user
-//        ]);
-//    }
+
 }

@@ -1,0 +1,29 @@
+
+                <td>{{ sortie.nom }} </td>
+                <td>{{ sortie.date ? sortie.date|date('d-m-Y H:i') : '' }} </td>
+                <td>{{ sortie.clotureinscription ? sortie.clotureinscription|date('d-m-Y H:i') : '' }} </td>
+                <td>{{ sortie.maxinscrits }} </td>
+                <td>{{ sortie.campus }}</td>
+                <td>{{ sortie.etatsSortie.libelle }} </td>
+                <td><input type="checkbox"> </td>
+                <td>{{ sortie.organisateur.username }}</td>
+                <td>
+                    {% if sortie.organisateur.username == user.username  %}
+                        <a href="#" class="btn btn-secondary">Modifier</a>
+                        {% if sortie.etatsSortie.id == 1 %}
+                        <a href="#" class="btn btn-secondary">Publier</a>
+                            {% elseif sortie.etatsSortie.id == 2 or sortie.etatsSortie.id == 3 or sortie.etatsSortie.id == 6 %}
+                                <a href="#" class="btn btn-secondary">Annuler</a>
+                        {% endif %}
+                    {% else %}
+                        <a href="#" class="btn btn-secondary">Afficher</a>
+                        {% if sortie.etatsSortie.id == 2 %}
+                            <a href="#" class="btn btn-secondary">S'inscrire</a>
+                            <a href="#" class="btn btn-secondary">Se désister</a>
+                        {% endif %}
+                        {% if sortie.etatsSortie.id == 6 %}
+                            <a href="#" class="btn btn-secondary">Se désister</a>
+                        {% endif %}
+                    {% endif %}
+                </td>
+
